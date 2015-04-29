@@ -1,0 +1,59 @@
+#bg {
+  background-image: url("/circles.png");
+  background-repeat: no-repeat;
+  background-size: 410px 476px;
+  width: 820px;
+  height: 952px;
+  position: absolute;
+}
+
+.border {border: 1px solid red;}
+.absolute {position:absolute; top:30px;}
+
+#circle1 {
+  width: 180px;
+  height: 180px;
+  @include border-radius(180px);
+  border: 3px solid cyan;
+  float: left;
+}
+
+#circle2 {
+  width: 150px;
+  height: 150px;
+  @include border-radius(150px);
+  border: 3px solid red;
+  float: left;
+}
+
+#circle3 {
+  width: 120px;
+  height: 120px;
+  @include border-radius(120px);
+  border: 3px solid green;
+  float: left;
+}
+
+#circle4 {
+  width: 170px;
+  height: 170px;
+  @include border-radius(170px);
+  border: 3px solid orange;
+  float: left;
+}
+
+#circle5 {
+  width: 170px;
+  height: 170px;
+  @include border-radius(170px);
+  border: 3px solid orange;
+  float: left;
+}
+
+#circle6 {
+  width: 170px;
+  height: 170px;
+  @include border-radius(170px);
+  border: 3px solid orange;
+  float: left;
+}

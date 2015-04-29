@@ -1,0 +1,18 @@
+<template name="playlists">
+    <div class="row">
+        <div class="col s12">
+            <h1 style="font-size: 30px;" class="center-align">Playlists</h1>
+            <ul class="collection with-header">
+                {{#each playlists}}
+                    <li class="collection-item">{{name}}</li>
+                {{/each}}
+            </ul>
+
+            <div class="center-align">
+                <button id="newPlaylist" class="btn waves-effect">
+                    <i class="mdi-content-add small left"></i>New playlist
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
