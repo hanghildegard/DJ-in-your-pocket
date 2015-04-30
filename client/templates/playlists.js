@@ -9,3 +9,5 @@ Template.playlists.events({
         Router.go("genreMap");
     }
 });
+
+//test
