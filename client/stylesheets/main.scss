@@ -1,5 +1,12 @@
-@import "compass/reset";
+
 @import "compass/css3/border-radius";
+@import "compass/reset";
+
+$positive: #DE4F4F;
+$loading-font-size: 22px;
+
+@import '.meteor/local/build/programs/server/assets/packages/meteoric_ionicons-sass/ionicons';
+@import '.meteor/local/build/programs/server/assets/packages/meteoric_ionic-sass/ionic';
 
 @import "app";
 @import "genre-map";

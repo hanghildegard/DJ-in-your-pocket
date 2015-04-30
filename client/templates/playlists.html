@@ -1,18 +1,30 @@
 <template name="playlists">
-    <div class="row">
-        <div class="col s12">
-            <h1 style="font-size: 30px;" class="center-align">Playlists</h1>
-            <ul class="collection with-header">
-                {{#each playlists}}
-                    <li class="collection-item">{{name}}</li>
-                {{/each}}
-            </ul>
+    {{#ionContent}}
+        <div class="row">
+            <div class="col s12">
+                {{#contentFor "headerTitle"}}
+                    <h1 class="title">Playlists</h1>
+                {{/contentFor}}
 
-            <div class="center-align">
-                <button id="newPlaylist" class="btn waves-effect">
-                    <i class="mdi-content-add small left"></i>New playlist
+                <ul class="collection with-header">
+                    {{#ionList class="my-class"}}
+                        {{#each playlists}}
+                            {{#ionItem path="playlist" buttonRight=true class="item-icon-right"}}
+                                {{name}}
+                                {{> ionIcon icon="ios-arrow-forward" class="positive"}}
+                            {{/ionItem}}
+                        {{/each}}
+                    {{/ionList}}
+                </ul>
+
+                <button id="newPlaylist" class="button button-full button-positive">
+                    New playlist
                 </button>
             </div>
         </div>
-    </div>
+    {{/ionContent}}
+</template>
+
+<template name="playlistItem">
+    <h2>{{name}}</h2>
 </template>

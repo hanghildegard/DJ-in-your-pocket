@@ -1,6 +1,23 @@
 Template.playlists.helpers({
     playlists: function() {
-        return Playlists.find();
+
+        Meteor.call('getPlaylists', function(error, result){
+            if(error){
+                console.log("error",error);
+            };
+            Session.set("playlists",result.data.data);
+        });
+
+        var playlists = Session.get("playlists");
+        return playlists;
+
+        //Meteor.call('getPlaylists',Session.get("uid"),Session.get("hash"),function(error, result){
+        //    if(error){
+        //        console.log("error",error);
+        //    };
+        //
+        //    return result.data.data;
+        //});
     }
 });
 

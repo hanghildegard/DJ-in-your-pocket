@@ -8,13 +8,15 @@ meteor-platform
 autopublish
 insecure
 
-chriswessels:hammer
 meteoric:ionic
 iron:router
+iron:layout
 fourseven:scss
+
 meteoric:ionic-sass
 meteoric:ionicons-sass
+
 reactive-var
-fastclick
 francocatena:compass
-materialize:materialize
+http
+jparker:crypto-sha1

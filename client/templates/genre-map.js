@@ -1,7 +1,13 @@
 var x;
 var y;
 var dragging = false;
-var mode = "select";
+
+Session.setDefault("brush", "select");
+
+var circles = [];
+Tracker.autorun(function() {
+    circles = Genres.find({type: "primary"}).fetch();
+});
 
 var lower;
 var upper;
@@ -22,8 +28,8 @@ function drawStroke(ctx){
     var i ;
     ctx.globalCompositeOperation = gCO;
 
-    if (mode !== "erase") {
-        if (mode === "select") {
+    if (Session.get("brush") !== "erase") {
+        if (Session.get("brush") === "select") {
             ctx.strokeStyle='rgba(0,0,0,0.5)' ;
         } else {
             ctx.strokeStyle='rgba(255,0,0,0.5)' ;
@@ -44,31 +50,48 @@ Template.genreMap.onRendered(function() {
     upper = $('#upper').get(0).getContext('2d') ;
 
     lower.canvas.width  = window.innerWidth;
-    lower.canvas.height = window.innerHeight - 30;
+    lower.canvas.height = window.innerHeight - 80;
     upper.canvas.width  = window.innerWidth;
-    upper.canvas.height = window.innerHeight - 30;
+    upper.canvas.height = window.innerHeight - 80;
 
 });
 
+Template.genreMap.helpers({
+    circles: function() {
+        return Genres.find({type: "primary"});
+    },
+    randomW: function() {
+        var number = Math.floor((Math.random() * 3) + 1);
+
+        return "w" + number;
+    },
+    brushIs: function(brush) {
+        return Session.get("brush") === brush;
+    }
+});
+
+Template.banBrush.events({
+    "click": function() {
+        Session.set("brush", "ban");
+    }
+});
+
+Template.selectBrush.events({
+    "click": function() {
+        Session.set("brush", "select");
+    }
+});
+
 Template.genreMap.events({
-    "click #select": function() {
-        mode = "select";
-    },
-    "click #ban": function() {
-        mode = "ban";
-    },
-    "click #erase": function() {
-        mode = "erase";
-    },
     "mousedown #upper, touchstart #upper": function(e) {
 
         if (typeof e.originalEvent.touches === "undefined") {
             x = [e.originalEvent.layerX];
-            y = [e.originalEvent.layerY];
+            y = [e.originalEvent.layerY - 40];
         } else {
             var touch = e.originalEvent.touches[0];
             x = [touch.pageX];
-            y = [touch.pageY];
+            y = [touch.pageY - 40];
         }
 
         dragging = true;
@@ -82,7 +105,7 @@ Template.genreMap.events({
             } else {
                 var touch = e.originalEvent.touches[0];
                 x.push(touch.pageX);
-                y.push(touch.pageY);
+                y.push(touch.pageY - 40);
             }
 
             upper.clearRect(0,0,upper.canvas.width,upper.canvas.height) ;
@@ -94,18 +117,18 @@ Template.genreMap.events({
         upper.clearRect(0,0,upper.canvas.width,upper.canvas.height) ;
         drawStroke(lower);
 
-        var circles = ["circle1", "circle2", "circle3", "circle4", "circle5", "circle6"];
         var paintedCircles = [];
 
-        _.each(circles, function(circleId) {
-            var circle = $("#" + circleId);
-            var offset = circle.offset();
+        console.log(circles);
 
+        _.each(circles, function(circle) {
+            var circle = $("#" + circle._id);
+            var offset = circle.offset();
             var circleCoordinates = {
                 xStart: offset.left,
                 xEnd: offset.left + circle.width(),
-                yStart: offset.top,
-                yEnd: offset.top + circle.height()
+                yStart: offset.top - 60,
+                yEnd: offset.top - 60 + circle.height()
             };
 
             var xPaintedOver = false;
@@ -126,52 +149,53 @@ Template.genreMap.events({
             var paintedOver = false;
 
             if (xPaintedOver && yPaintedOver) {
-                paintedCircles.push(circleId);
-                circle.css({backgroundColor: "red"});
+                paintedCircles.push(circle._id);
+                if (Session.get("brush") === "select") {
+                    circle.css({backgroundColor: "#80cbc4"});
+                } else if (Session.get("brush") === "ban") {
+                    circle.css({backgroundColor: "#ef9a9a"});
+                }
             }
         });
 
     }
 });
 
-Template.genreMap.gestures({
-    'pinchout #upper': function (event, template) {
-
-        var x, y;
-        x = event.center.x;
-        y = event.center.y;
-
-
-        var circles = ["circle1", "circle2", "circle3", "circle4", "circle5", "circle6"];
-
-        _.each(circles, function(circleId) {
-            var circle = $("#" + circleId);
-            var offset = circle.offset();
-
-            var circleCoordinates = {
-                xStart: offset.left,
-                xEnd: offset.left + circle.width(),
-                yStart: offset.top,
-                yEnd: offset.top + circle.height()
-            };
-
-            var xPinch = false;
-            var yPinch = false;
-
-            if (x >= circleCoordinates.xStart && x <= circleCoordinates.xEnd) {
-                xPinch = true;
-            }
-
-            if (y >= circleCoordinates.yStart && y <= circleCoordinates.yEnd) {
-                yPinch = true;
-            }
-
-            if (xPinch && yPinch) {
-
-                var genre = circle[0].innerHTML;
-
-                Router.go("genre", {genre: genre});
-            }
-        });
-    }
-});
+//Template.genreMap.gestures({
+//    'pinchout #upper': function (event, template) {
+//
+//        var x, y;
+//        x = event.center.x;
+//        y = event.center.y;
+//
+//        _.each(circles, function(circle) {
+//            var circle = $("#" + circle._id);
+//            var offset = circle.offset();
+//
+//            var circleCoordinates = {
+//                xStart: offset.left,
+//                xEnd: offset.left + circle.width(),
+//                yStart: offset.top,
+//                yEnd: offset.top + circle.height()
+//            };
+//
+//            var xPinch = false;
+//            var yPinch = false;
+//
+//            if (x >= circleCoordinates.xStart && x <= circleCoordinates.xEnd) {
+//                xPinch = true;
+//            }
+//
+//            if (y >= circleCoordinates.yStart && y <= circleCoordinates.yEnd) {
+//                yPinch = true;
+//            }
+//
+//            if (xPinch && yPinch) {
+//
+//                var genre = circle[0].innerHTML;
+//
+//                Router.go("genre", {genre: genre});
+//            }
+//        });
+//    }
+//});

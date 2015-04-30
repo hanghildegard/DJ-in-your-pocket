@@ -1,0 +1,18 @@
+<template name="song">
+
+    {{#contentFor "headerButtonLeft"}}
+        {{>ionNavBackButton}}
+    {{/contentFor}}
+
+    {{#contentFor "headerTitle"}}
+        <h1 class="title">Song</h1>
+    {{/contentFor}}
+
+    {{#ionView}}
+        {{#ionContent}}
+            <h2 style="text-align: center;">{{song.song}}</h2>
+            <!--<button id="play">Play</button>-->
+            <!--<button id="pause">Pause</button>-->
+        {{/ionContent}}
+    {{/ionView}}
+</template>

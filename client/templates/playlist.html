@@ -1,0 +1,23 @@
+<template name="playlist">
+
+    {{#contentFor "headerButtonLeft"}}
+        {{>ionNavBackButton}}
+    {{/contentFor}}
+
+    {{#contentFor "headerTitle"}}
+        <h1 class="title">{{playlist.name}}</h1>
+    {{/contentFor}}
+
+    {{#ionView}}
+        {{#ionContent}}
+            {{#ionList}}
+                {{#each songs}}
+                    {{#ionItem path="song" buttonRight=true class="item-icon-right"}}
+                        {{song}}
+                        {{> ionIcon icon="ios-arrow-forward" class="positive"}}
+                    {{/ionItem}}
+                {{/each}}
+            {{/ionList}}
+        {{/ionContent}}
+    {{/ionView}}
+</template>

@@ -1,17 +1,41 @@
 <template name="genreMap">
 
-    <div style="height: 100px;">
-        <button id="select">Select</button>
-        <button id="ban">Ban</button>
-        <button id="erase">Erase</button>
-    </div>
+    {{#contentFor "headerButtonLeft"}}
+        {{>ionNavBackButton}}
+    {{/contentFor}}
 
-    <canvas id="lower" class="border absolute"></canvas>
-    <canvas id="upper" class="border absolute"></canvas>
-    <div id="circle1" class="circle">Jazz</div>
-    <div id="circle2" class="circle">Rock</div>
-    <div id="circle3" class="circle">Pop</div>
-    <div id="circle4" class="circle">Classical</div>
-    <div id="circle5" class="circle">Punk</div>
-    <div id="circle6" class="circle">Rap</div>
+    {{#contentFor "headerTitle"}}
+        <h1 class="title">Genres</h1>
+    {{/contentFor}}
+
+    {{#contentFor "headerButtonRight"}}
+        {{#if brushIs 'select'}}
+            {{>banBrush}}
+        {{else}}
+            {{>selectBrush}}
+        {{/if}}
+    {{/contentFor}}
+
+    {{#ionView}}
+        {{#ionContent class="padding"}}
+            <div style="position: absolute;">
+                <div id="circles" style="">
+                    {{#each circles}}
+                        <div id="{{_id}}" class="circle {{randomW}}"><span class="title">{{name}}</span></div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <canvas id="lower" class="absolute"></canvas>
+            <canvas id="upper" class="absolute"></canvas>
+        {{/ionContent}}
+    {{/ionView}}
+</template>
+
+<template name="selectBrush">
+    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-plus-circled"></i></button>
+</template>
+
+<template name="banBrush">
+    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-close-circled"></i></button>
 </template>
