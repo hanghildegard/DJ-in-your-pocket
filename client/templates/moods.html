@@ -1,11 +1,11 @@
-<template name="genreMap">
+<template name="moods">
 
     {{#contentFor "headerButtonLeft"}}
         {{>ionNavBackButton}}
     {{/contentFor}}
 
     {{#contentFor "headerTitle"}}
-        <h1 class="title">Genres</h1>
+        <h1 class="title">Moods</h1>
     {{/contentFor}}
 
     {{#contentFor "headerButtonRight"}}
@@ -18,10 +18,13 @@
 
     {{#ionView}}
         {{#ionContent class="padding"}}
-            <div style="position: absolute;">
+            <div id="canvasContainer" style="position: absolute;">
                 <div id="circles" style="">
-                    {{#each circles}}
-                        <div id="{{_id}}" class="circle {{randomW}}"><span class="title">{{name}}</span></div>
+                    {{#each moods}}
+                        <div style="width: 29%; margin: 2%; float: left; text-align: center;" id="{{name}}">
+                            <img style="width: 100%" src="/icons/moods/{{icon}}" />
+                            <h2 class="title" style="margin-top: 0;">{{name}}</h2>
+                        </div>
                     {{/each}}
                 </div>
             </div>
@@ -32,16 +35,8 @@
     {{/ionView}}
 
     {{#ionTabs class="tabs-positive tabs-icon-top"}}
-        {{> ionTab title="Genres" path="genres" iconOff="android-radio-button-off" iconOn="android-radio-button-off"}}
+        {{> ionTab title="Genres" path="genreMap" iconOff="android-radio-button-off" iconOn="android-radio-button-off"}}
         {{> ionTab title="Periods" path="periods" iconOff="calendar" iconOn="calendar"}}
         {{> ionTab title="Moods" path="moods" iconOff="android-happy" iconOn="android-happy"}}
     {{/ionTabs}}
-</template>
-
-<template name="selectBrush">
-    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-plus-circled"></i></button>
-</template>
-
-<template name="banBrush">
-    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-close-circled"></i></button>
 </template>

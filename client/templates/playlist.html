@@ -11,12 +11,16 @@
     {{#ionView}}
         {{#ionContent}}
             {{#ionList}}
-                {{#each songs}}
-                    {{#ionItem path="song" buttonRight=true class="item-icon-right"}}
-                        {{song}}
-                        {{> ionIcon icon="ios-arrow-forward" class="positive"}}
-                    {{/ionItem}}
-                {{/each}}
+                {{#if songs.length}}
+                    {{#each songs}}
+                        {{#ionItem path="song" buttonRight=true class="item-icon-right"}}
+                            {{song}}
+                            {{> ionIcon icon="ios-arrow-forward" class="positive"}}
+                        {{/ionItem}}
+                    {{/each}}
+                {{else}}
+                    Loading...
+                {{/if}}
             {{/ionList}}
         {{/ionContent}}
     {{/ionView}}

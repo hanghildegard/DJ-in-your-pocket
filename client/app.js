@@ -8,4 +8,14 @@ Meteor.startup(function () {
     //manager.add(twoFingerSwipe);
     //
     //manager.get('pinch').set({ enable: true });
+    var authToken;
+    Meteor.call("getAuthToken", function(error, result) {
+        if (!error) {
+            authToken = result;
+            Session.set("token", authToken);
+            console.log(result);
+        } else {
+            console.log(error);
+        }
+    });
 });

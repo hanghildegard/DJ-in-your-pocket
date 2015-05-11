@@ -14,6 +14,16 @@ Router.route("/genres", {
     }
 });
 
+Router.route("/moods", {
+    template: "moods",
+    name: "moods"
+});
+
+Router.route("/periods", {
+    template: "periods",
+    name: "periods"
+});
+
 Router.route("/genre/:genre", {
     template: "genre",
     name: "genre",

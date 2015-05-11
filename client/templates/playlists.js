@@ -1,6 +1,7 @@
+Session.setDefault("playlists",[]);
+
 Template.playlists.helpers({
     playlists: function() {
-
         Meteor.call('getPlaylists', function(error, result){
             if(error){
                 console.log("error",error);

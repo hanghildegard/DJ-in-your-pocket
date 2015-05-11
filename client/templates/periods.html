@@ -1,11 +1,11 @@
-<template name="genreMap">
+<template name="periods">
 
     {{#contentFor "headerButtonLeft"}}
         {{>ionNavBackButton}}
     {{/contentFor}}
 
     {{#contentFor "headerTitle"}}
-        <h1 class="title">Genres</h1>
+        <h1 class="title">Moods</h1>
     {{/contentFor}}
 
     {{#contentFor "headerButtonRight"}}
@@ -18,10 +18,12 @@
 
     {{#ionView}}
         {{#ionContent class="padding"}}
-            <div style="position: absolute;">
-                <div id="circles" style="">
-                    {{#each circles}}
-                        <div id="{{_id}}" class="circle {{randomW}}"><span class="title">{{name}}</span></div>
+            <div id="canvasContainer" style="position: absolute; height: 100%; width: 100%;">
+                <div id="circles" style="height: 100%; width: 100%;">
+                    {{#each periods}}
+                        <div id="{{this}}" style="height: {{#if isShort this}}5{{else}}9{{/if}}%; border-bottom: 1px solid black;">
+                            {{this}}
+                        </div>
                     {{/each}}
                 </div>
             </div>
@@ -36,12 +38,4 @@
         {{> ionTab title="Periods" path="periods" iconOff="calendar" iconOn="calendar"}}
         {{> ionTab title="Moods" path="moods" iconOff="android-happy" iconOn="android-happy"}}
     {{/ionTabs}}
-</template>
-
-<template name="selectBrush">
-    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-plus-circled"></i></button>
-</template>
-
-<template name="banBrush">
-    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-close-circled"></i></button>
 </template>

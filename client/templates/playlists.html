@@ -8,12 +8,16 @@
 
                 <ul class="collection with-header">
                     {{#ionList class="my-class"}}
-                        {{#each playlists}}
-                            {{#ionItem path="playlist" buttonRight=true class="item-icon-right"}}
-                                {{name}}
-                                {{> ionIcon icon="ios-arrow-forward" class="positive"}}
-                            {{/ionItem}}
-                        {{/each}}
+                        {{#if playlists.length}}
+                            {{#each playlists}}
+                                {{#ionItem path="playlist" buttonRight=true class="item-icon-right"}}
+                                    {{name}}
+                                    {{> ionIcon icon="ios-arrow-forward" class="positive"}}
+                                {{/ionItem}}
+                            {{/each}}
+                        {{else}}
+                            Loading...
+                        {{/if}}
                     {{/ionList}}
                 </ul>
 

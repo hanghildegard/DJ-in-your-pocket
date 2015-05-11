@@ -6,7 +6,6 @@ Meteor.startup(function () {
 
     function getPlaylists(uid, pw, callback) {
         HTTP.post(url,{params: {uid: uid, pw:pw, method: "getPlaylists"}}, function(err, result) {
-            console.log(result);
             return callback(err, result);
         });
     }

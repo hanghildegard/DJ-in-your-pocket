@@ -1,6 +1,6 @@
 Session.setDefault("songs", []);
 
-Template.playlist.onCreated(function() {
+Template.playlist.onRendered(function() {
     var playlistId = Router.current().params.id;
     var playList = _.findWhere(Session.get("playlists"), {id: playlistId});
     Session.set("currentPlaylist", playList);
