@@ -14,10 +14,6 @@ var moods = [
         icon: "sad.svg"
     },
     {
-        name: "Angry",
-        icon: "angry.svg"
-    },
-    {
         name: "Romantic",
         icon: "romantic.svg"
     },
@@ -36,6 +32,10 @@ var moods = [
     {
         name: "Uplifting",
         icon: "uplifting.svg"
+    },
+    {
+        name: "Aggressive",
+        icon: "aggressive.svg"
     }
 ];
 
