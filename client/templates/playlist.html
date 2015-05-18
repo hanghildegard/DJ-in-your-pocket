@@ -8,6 +8,10 @@
         <h1 class="title">{{playlist.name}}</h1>
     {{/contentFor}}
 
+    {{#contentFor "headerButtonRight"}}
+        <a href="/filters" class="buttons button button-clear back-button pull-right" id="done">Edit</a>
+    {{/contentFor}}
+
     {{#ionView}}
         {{#ionContent}}
             {{#ionList}}
@@ -19,7 +23,7 @@
                         {{/ionItem}}
                     {{/each}}
                 {{else}}
-                    Loading...
+                    {{>loading}}
                 {{/if}}
             {{/ionList}}
         {{/ionContent}}

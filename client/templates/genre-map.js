@@ -2,6 +2,18 @@ var x;
 var y;
 var dragging = false;
 
+var onShakeGenres = _.debounce(function onShake() {
+    var playlist = Session.get("currentPlaylist");
+    playlist.selectedGenres = [];
+    playlist.bannedGenres = [];
+
+    Session.set("currentPlaylist", playlist);
+
+    Meteor.call("updatePlaylist", playlist, function () {
+
+    });
+}, 750, true);
+
 Session.setDefault("brush", "select");
 
 var circles = [];
@@ -49,6 +61,11 @@ Template.genreMap.onRendered(function() {
     lower = $('#lower').get(0).getContext('2d') ;
     upper = $('#upper').get(0).getContext('2d') ;
 
+    shake.startWatch(function () {
+        lower.clearRect(0, 0, window.innerWidth, window.innerHeight - 80);
+        onShakeGenres();
+    }, 30);
+
     lower.canvas.width  = window.innerWidth;
     lower.canvas.height = window.innerHeight - 80;
     upper.canvas.width  = window.innerWidth;
@@ -56,17 +73,22 @@ Template.genreMap.onRendered(function() {
 
 });
 
+Template.genreMap.onDestroyed(function() {
+    shake.stopWatch();
+});
+
 Template.genreMap.helpers({
     circles: function() {
         return Genres.find({type: "primary"});
     },
-    randomW: function() {
-        var number = Math.floor((Math.random() * 3) + 1);
-
-        return "w" + number;
-    },
     brushIs: function(brush) {
         return Session.get("brush") === brush;
+    },
+    status: function(metaId) {
+        if (Session.get("currentPlaylist").selectedGenres.indexOf(metaId) > -1)
+            return 'selected';
+        else if (Session.get("currentPlaylist").bannedGenres.indexOf(metaId) > -1)
+            return 'banned';
     }
 });
 
@@ -117,12 +139,11 @@ Template.genreMap.events({
         upper.clearRect(0,0,upper.canvas.width,upper.canvas.height) ;
         drawStroke(lower);
 
-        var paintedCircles = [];
+        var selectedCircles = Session.get("currentPlaylist").selectedGenres;
+        var bannedCircles = Session.get("currentPlaylist").bannedGenres;
 
-        console.log(circles);
-
-        _.each(circles, function(circle) {
-            var circle = $("#" + circle._id);
+        _.each(circles, function(genre) {
+            var circle = $("#" + genre.metaId);
             var offset = circle.offset();
             var circleCoordinates = {
                 xStart: offset.left,
@@ -149,13 +170,34 @@ Template.genreMap.events({
             var paintedOver = false;
 
             if (xPaintedOver && yPaintedOver) {
-                paintedCircles.push(circle._id);
                 if (Session.get("brush") === "select") {
-                    circle.css({backgroundColor: "#80cbc4"});
+                    if (selectedCircles.indexOf(genre.metaId) < 0) {
+                        selectedCircles.push(genre.metaId);
+                    }
+
+                    if (bannedCircles.indexOf(genre.metaId) > -1) {
+                        bannedCircles.splice(bannedCircles.indexOf(genre.metaId), 1);
+                    }
                 } else if (Session.get("brush") === "ban") {
-                    circle.css({backgroundColor: "#ef9a9a"});
+                    if (bannedCircles.indexOf(genre.metaId) < 0) {
+                        bannedCircles.push(genre.metaId);
+                    }
+
+                    if (selectedCircles.indexOf(genre.metaId) > -1) {
+                        selectedCircles.splice(selectedCircles.indexOf(genre.metaId), 1);
+                    }
                 }
             }
+        });
+
+        var playlist = Session.get("currentPlaylist");
+        playlist.selectedGenres = selectedCircles;
+        playlist.bannedGenres = bannedCircles;
+
+        Session.set("currentPlaylist", playlist);
+
+        Meteor.call("updatePlaylist", Session.get("currentPlaylist"), function() {
+
         });
 
     }
@@ -169,7 +211,7 @@ Template.genreMap.events({
 //        y = event.center.y;
 //
 //        _.each(circles, function(circle) {
-//            var circle = $("#" + circle._id);
+//            var circle = $("#" + circle.metaId);
 //            var offset = circle.offset();
 //
 //            var circleCoordinates = {

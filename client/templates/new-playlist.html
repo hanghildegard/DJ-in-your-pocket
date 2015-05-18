@@ -1,0 +1,27 @@
+<template name="newPlaylist">
+    {{#ionContent}}
+
+        {{#contentFor "headerButtonLeft"}}
+            {{>ionNavBackButton}}
+        {{/contentFor}}
+
+        {{#contentFor "headerTitle"}}
+            <h1 class="title">New playlist</h1>
+        {{/contentFor}}
+
+
+        <div class="row">
+            <div class="col s12">
+
+                {{#autoForm schema="PlaylistSchema" doc=newPlaylist id="newPlaylist"}}
+                    <div>
+                        <div style="padding-bottom: 20px; background-color: transparent; border: 0;">
+                            {{>afQuickField name="name"}}
+                        </div>
+                        <button type="submit" class="button button-full button-positive">Create</button>
+                    </div>
+                {{/autoForm}}
+            </div>
+        </div>
+    {{/ionContent}}
+</template>

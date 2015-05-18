@@ -1,4 +1,4 @@
-<template name="periods">
+<template name="timeline">
 
     {{#contentFor "headerButtonLeft"}}
         {{>ionNavBackButton}}
@@ -20,7 +20,7 @@
         {{#ionContent class="padding"}}
             <div id="canvasContainer" style="position: absolute; height: 100%; width: 100%;">
                 <div id="circles" style="height: 100%; width: 100%;">
-                    {{#each periods}}
+                    {{#each timeline}}
                         <div id="{{this}}" style="height: {{#if isShort this}}5{{else}}9{{/if}}%; border-bottom: 1px solid black;">
                             {{this}}
                         </div>
@@ -33,9 +33,4 @@
         {{/ionContent}}
     {{/ionView}}
 
-    {{#ionTabs class="tabs-positive tabs-icon-top"}}
-        {{> ionTab title="Genres" path="genres" iconOff="android-radio-button-off" iconOn="android-radio-button-off"}}
-        {{> ionTab title="Periods" path="periods" iconOff="calendar" iconOn="calendar"}}
-        {{> ionTab title="Moods" path="moods" iconOff="android-happy" iconOn="android-happy"}}
-    {{/ionTabs}}
 </template>

@@ -6,6 +6,7 @@ Template.playlists.helpers({
             if(error){
                 console.log("error",error);
             };
+            console.log(result.data.data);
             Session.set("playlists",result.data.data);
         });
 
@@ -24,7 +25,13 @@ Template.playlists.helpers({
 
 Template.playlists.events({
     "click #newPlaylist": function() {
-        Router.go("genreMap");
+        Router.go("new-playlist");
+    }
+});
+
+Template.newPlaylistButton.events({
+    "click": function() {
+        Router.go("new-playlist");
     }
 });
 

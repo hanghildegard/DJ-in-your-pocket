@@ -21,7 +21,7 @@
             <div style="position: absolute;">
                 <div id="circles" style="">
                     {{#each circles}}
-                        <div id="{{_id}}" class="circle {{randomW}}"><span class="title">{{name}}</span></div>
+                        <div id="{{metaId}}" class="circle {{status metaId}}"><span class="title">{{{name}}}</span></div>
                     {{/each}}
                 </div>
             </div>
@@ -31,17 +31,12 @@
         {{/ionContent}}
     {{/ionView}}
 
-    {{#ionTabs class="tabs-positive tabs-icon-top"}}
-        {{> ionTab title="Genres" path="genres" iconOff="android-radio-button-off" iconOn="android-radio-button-off"}}
-        {{> ionTab title="Periods" path="periods" iconOff="calendar" iconOn="calendar"}}
-        {{> ionTab title="Moods" path="moods" iconOff="android-happy" iconOn="android-happy"}}
-    {{/ionTabs}}
 </template>
 
 <template name="selectBrush">
-    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-plus-circled"></i></button>
+    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-thumbsup"></i></button>
 </template>
 
 <template name="banBrush">
-    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-close-circled"></i></button>
+    <button class="buttons button button-clear back-button pull-right"><i class="icon ion-thumbsdown"></i></button>
 </template>

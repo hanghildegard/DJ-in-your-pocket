@@ -1,0 +1,15 @@
+<template name="debug">
+    {{#contentFor "headerButtonLeft"}}
+        {{>ionNavBackButton}}
+    {{/contentFor}}
+
+    {{#contentFor "headerTitle"}}
+        <h1 class="title">Debug</h1>
+    {{/contentFor}}
+
+    {{#ionView}}
+        {{#ionContent class="padding"}}
+            <pre>{{data}}</pre>
+        {{/ionContent}}
+    {{/ionView}}
+</template>

@@ -6,9 +6,17 @@ Router.route("/", {
     template: "playlists"
 });
 
+Router.route("/new-playlist", {
+    template: "newPlaylist"
+});
+
+Router.route("/filters", {
+    template: "filtersMenu"
+});
+
 Router.route("/genres", {
     template: "genreMap",
-    name: "genreMap",
+    name: "genres",
     data: function() {
         return Genres.find({type: "parent"});
     }
@@ -19,9 +27,14 @@ Router.route("/moods", {
     name: "moods"
 });
 
-Router.route("/periods", {
-    template: "periods",
-    name: "periods"
+Router.route("/debug", {
+    template: "debug",
+    name: "debug"
+});
+
+Router.route("/timeline", {
+    template: "timeline",
+    name: "timeline"
 });
 
 Router.route("/genre/:genre", {

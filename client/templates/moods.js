@@ -4,38 +4,57 @@ var dragging = false;
 
 Session.setDefault("brush", "select");
 
+var onShakeMoods = _.debounce(function onShake() {
+    var playlist = Session.get("currentPlaylist");
+    playlist.selectedMoods = [];
+    playlist.bannedMoods = [];
+
+    Session.set("currentPlaylist", playlist);
+
+    Meteor.call("updatePlaylist", playlist, function () {
+    });
+}, 750, true);
+
 var moods = [
     {
         name: "Happy",
-        icon: "happy.svg"
+        icon: "happy.svg",
+        metaId: "12"
     },
     {
         name: "Sad",
-        icon: "sad.svg"
+        icon: "sad.svg",
+        metaId: "13"
     },
     {
         name: "Romantic",
-        icon: "romantic.svg"
+        icon: "romantic.svg",
+        metaId: "8"
     },
     {
         name: "Festive",
-        icon: "festive.svg"
+        icon: "festive.svg",
+        metaId: "18"
     },
     {
         name: "Energetic",
-        icon: "energetic.svg"
+        icon: "energetic.svg",
+        metaId: "11"
     },
     {
         name: "Bombastic",
-        icon: "bombastic.svg"
+        icon: "bombastic.svg",
+        metaId: "28"
     },
     {
         name: "Uplifting",
-        icon: "uplifting.svg"
+        icon: "uplifting.svg",
+        metaId: "10"
     },
     {
         name: "Aggressive",
-        icon: "aggressive.svg"
+        icon: "aggressive.svg",
+        metaId: "14"
     }
 ];
 
@@ -79,9 +98,14 @@ Template.moods.onRendered(function() {
     lower = $('#lower').get(0).getContext('2d') ;
     upper = $('#upper').get(0).getContext('2d') ;
 
+    shake.startWatch(function () {
+        lower.clearRect(0, 0, $("#canvasContainer").width(), $("#canvasContainer").height());
+        onShakeMoods();
+    }, 30);
+
+
     $(document).ready(function() {
         Meteor.setTimeout(function(){
-            console.log("width", $("#canvasContainer").width());
             lower.canvas.width  = $("#canvasContainer").width();
             lower.canvas.height = $("#canvasContainer").height() - 80;
             upper.canvas.width  = $("#canvasContainer").width();
@@ -89,6 +113,11 @@ Template.moods.onRendered(function() {
         }, 300);
     });
 
+});
+
+
+Template.moods.onDestroyed(function() {
+    shake.stopWatch();
 });
 
 Template.moods.helpers({
@@ -102,6 +131,12 @@ Template.moods.helpers({
     },
     brushIs: function(brush) {
         return Session.get("brush") === brush;
+    },
+    status: function(metaId) {
+        if (Session.get("currentPlaylist").selectedMoods.indexOf(metaId) > -1)
+            return 'selected';
+        else if (Session.get("currentPlaylist").bannedMoods.indexOf(metaId) > -1)
+            return 'banned';
     }
 });
 
@@ -156,8 +191,11 @@ Template.moods.events({
 
         console.log(moods);
 
-        _.each(moods, function(mood) {
-            var mood = $("#" + mood.name);
+        var selectedCircles = Session.get("currentPlaylist").selectedMoods;
+        var bannedCircles = Session.get("currentPlaylist").bannedMoods;
+
+        _.each(moods, function(item) {
+            var mood = $("#" + item.metaId);
             var offset = mood.offset();
             var moodCoordinates = {
                 xStart: offset.left,
@@ -184,53 +222,37 @@ Template.moods.events({
             var paintedOver = false;
 
             if (xPaintedOver && yPaintedOver) {
-                paintedCircles.push(mood.name);
                 if (Session.get("brush") === "select") {
-                    mood.css({backgroundColor: "#80cbc4"});
+                    if (selectedCircles.indexOf(item.metaId) < 0) {
+                        selectedCircles.push(item.metaId);
+                    }
+
+                    if (bannedCircles.indexOf(item.metaId) > -1) {
+                        bannedCircles.splice(bannedCircles.indexOf(item.metaId), 1);
+                    }
                 } else if (Session.get("brush") === "ban") {
-                    mood.css({backgroundColor: "#ef9a9a"});
+                    if (bannedCircles.indexOf(item.metaId) < 0) {
+                        bannedCircles.push(item.metaId);
+                    }
+
+                    if (selectedCircles.indexOf(item.metaId) > -1) {
+                        selectedCircles.splice(selectedCircles.indexOf(item.metaId), 1);
+                    }
                 }
             }
         });
 
+        var playlist = Session.get("currentPlaylist");
+        playlist.selectedMoods = selectedCircles;
+        playlist.bannedMoods = bannedCircles;
+
+        console.log(playlist);
+
+        Session.set("currentPlaylist", playlist);
+
+        Meteor.call("updatePlaylist", Session.get("currentPlaylist"), function() {
+            
+        });
+
     }
 });
-
-//Template.moods.gestures({
-//    'pinchout #upper': function (event, template) {
-//
-//        var x, y;
-//        x = event.center.x;
-//        y = event.center.y;
-//
-//        _.each(moods, function(mood) {
-//            var mood = $("#" + mood.name);
-//            var offset = mood.offset();
-//
-//            var moodCoordinates = {
-//                xStart: offset.left,
-//                xEnd: offset.left + mood.width(),
-//                yStart: offset.top,
-//                yEnd: offset.top + mood.height()
-//            };
-//
-//            var xPinch = false;
-//            var yPinch = false;
-//
-//            if (x >= moodCoordinates.xStart && x <= moodCoordinates.xEnd) {
-//                xPinch = true;
-//            }
-//
-//            if (y >= moodCoordinates.yStart && y <= moodCoordinates.yEnd) {
-//                yPinch = true;
-//            }
-//
-//            if (xPinch && yPinch) {
-//
-//                var genre = mood[0].innerHTML;
-//
-//                Router.go("genre", {genre: genre});
-//            }
-//        });
-//    }
-//});

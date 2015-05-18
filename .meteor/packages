@@ -21,3 +21,7 @@ francocatena:compass
 http
 jparker:crypto-sha1
 ground:db
+
+aldeed:autoform@4.2.0
+meteoric:autoform-ionic
+shake:shake

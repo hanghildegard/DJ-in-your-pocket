@@ -5,6 +5,8 @@ Template.playlist.onRendered(function() {
     var playList = _.findWhere(Session.get("playlists"), {id: playlistId});
     Session.set("currentPlaylist", playList);
 
+    GetPlaylistData(playlistId);
+
     Meteor.call('getPlaylistSongs', playlistId,function(error, result){
         if(error){
             console.log("error",error);
@@ -16,6 +18,6 @@ Template.playlist.onRendered(function() {
 
 Template.playlist.helpers({
     songs: function() {
-        return Session.get("songs");
+        return Session.get("songs").slice(0, 29);
     }
 });

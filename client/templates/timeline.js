@@ -4,7 +4,7 @@ var dragging = false;
 
 Session.setDefault("brush", "select");
 
-var periods = [
+var timeline = [
     "2015",
     "2010",
     "2000",
@@ -54,7 +54,7 @@ function drawStroke(ctx){
     }
 }
 
-Template.periods.onRendered(function() {
+Template.timeline.onRendered(function() {
 
     lower = $('#lower').get(0).getContext('2d') ;
     upper = $('#upper').get(0).getContext('2d') ;
@@ -71,9 +71,9 @@ Template.periods.onRendered(function() {
 
 });
 
-Template.periods.helpers({
-    periods: function() {
-        return periods;
+Template.timeline.helpers({
+    timeline: function() {
+        return timeline;
     },
     isShort: function(period) {
         return (period === "1910" || period === "1920" || period === "1930" || period === "1940");
@@ -95,7 +95,7 @@ Template.selectBrush.events({
     }
 });
 
-Template.periods.events({
+Template.timeline.events({
     "mousedown #upper, touchstart #upper": function(e) {
 
         if (typeof e.originalEvent.touches === "undefined") {
@@ -132,9 +132,9 @@ Template.periods.events({
 
         var paintedCircles = [];
 
-        console.log(periods);
+        console.log(timeline);
 
-        _.each(periods, function(period) {
+        _.each(timeline, function(period) {
             var period = $("#" + period);
             var offset = period.offset();
             var periodCoordinates = {
@@ -174,14 +174,14 @@ Template.periods.events({
     }
 });
 
-//Template.periods.gestures({
+//Template.timeline.gestures({
 //    'pinchout #upper': function (event, template) {
 //
 //        var x, y;
 //        x = event.center.x;
 //        y = event.center.y;
 //
-//        _.each(periods, function(period) {
+//        _.each(timeline, function(period) {
 //            var period = $("#" + period);
 //            var offset = period.offset();
 //
