@@ -42,6 +42,11 @@ Router.route("/themes", {
     name: "themes"
 });
 
+Router.route("/uses", {
+    template: "uses",
+    name: "uses"
+});
+
 Router.route("/debug", {
     template: "debug",
     name: "debug"

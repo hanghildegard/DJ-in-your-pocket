@@ -21,6 +21,9 @@ GetPlaylistData = function(playlistId) {
         playlist.selectedLanguages = [];
         playlist.bannedLanguages = [];
 
+        playlist.selectedUses = [];
+        playlist.bannedUses = [];
+
 
         _.each(playlist.rules, function(rule) {
             switch(rule.type) {
