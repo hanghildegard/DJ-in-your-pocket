@@ -1,62 +1,82 @@
+/**
+ * Created by hangdominh on 18/05/15.
+ */
 var x;
 var y;
 var dragging = false;
 
 Session.setDefault("brush", "select");
 
+var styles = [
+    {
+        name: "Melodic",
+        icon: "melodic.svg",
+        metaId: "22"
+    },
+    {
+        name: "Ballad",
+        icon: "ballad.svg",
+        metaId: "31"
+    },
+    {
+        name: "Explicit content",
+        icon: "explicit content.svg",
+        metaId: "23"
+    },
+    {
+        name: "Humour",
+        icon: "humor.svg",
+        metaId: "30"
+    },
+    {
+        name: "Common",
+        icon: "common.svg",
+        metaId: "3"
+    },
+    {
+        name: "Psychedelic",
+        icon: "psychedelic.svg",
+        metaId: "21"
+    },
+    {
+        name: "Artistic",
+        icon: "artistic.svg",
+        metaId: "25"
+    },
+    {
+        name: "Experimental",
+        icon: "experimental.svg",
+        metaId: "24"
+    },
+    {
+        name: "Teen oriented",
+        icon: "teen oriented.svg",
+        metaId: "27"
+    },
+    {
+        name: "Adult oriented",
+        icon: "adult oriented.svg",
+        metaId: "26"
+    }
+];
+
 var onShakeMoods = _.debounce(function onShake() {
     var playlist = Session.get("currentPlaylist");
-    playlist.selectedMoods = [];
-    playlist.bannedMoods = [];
+
+    var styleIds = [];
+
+    _.each(styles, function(style) {
+        styleIds.push(style.metaId);
+    });
+
+    playlist.selectedMoods = _.without(playlist.selectedMoods, styleIds);
+    playlist.bannedMoods = _.without(playlist.bannedMoods, styleIds);
 
     Session.set("currentPlaylist", playlist);
 
     Meteor.call("updatePlaylist", playlist, function () {
     });
 }, 750, true);
-
-var moods = [
-    {
-        name: "Happy",
-        icon: "happy.svg",
-        metaId: "12"
-    },
-    {
-        name: "Sad",
-        icon: "sad.svg",
-        metaId: "13"
-    },
-    {
-        name: "Romantic",
-        icon: "romantic.svg",
-        metaId: "8"
-    },
-    {
-        name: "Festive",
-        icon: "festive.svg",
-        metaId: "18"
-    },
-    {
-        name: "Energetic",
-        icon: "energetic.svg",
-        metaId: "11"
-    },
-    {
-        name: "Bombastic",
-        icon: "bombastic.svg",
-        metaId: "28"
-    },
-    {
-        name: "Uplifting",
-        icon: "uplifting.svg",
-        metaId: "10"
-    },
-    {
-        name: "Aggressive",
-        icon: "aggressive.svg",
-        metaId: "14"
-    }
-];
 
 var lower;
 var upper;
@@ -93,7 +113,7 @@ function drawStroke(ctx){
     }
 }
 
-Template.moods.onRendered(function() {
+Template.styles.onRendered(function() {
 
     lower = $('#lower').get(0).getContext('2d') ;
     upper = $('#upper').get(0).getContext('2d') ;
@@ -116,13 +136,13 @@ Template.moods.onRendered(function() {
 });
 
 
-Template.moods.onDestroyed(function() {
+Template.styles.onDestroyed(function() {
     shake.stopWatch();
 });
 
-Template.moods.helpers({
-    moods: function() {
-        return moods;
+Template.styles.helpers({
+    styles: function() {
+        return styles;
     },
     brushIs: function(brush) {
         return Session.get("brush") === brush;
@@ -147,7 +167,7 @@ Template.selectBrush.events({
     }
 });
 
-Template.moods.events({
+Template.styles.events({
     "mousedown #upper, touchstart #upper": function(e) {
 
         if (typeof e.originalEvent.touches === "undefined") {
@@ -184,37 +204,37 @@ Template.moods.events({
 
         var paintedCircles = [];
 
-        console.log(moods);
-
         var selectedCircles = Session.get("currentPlaylist").selectedMoods;
         var bannedCircles = Session.get("currentPlaylist").bannedMoods;
 
-        _.each(moods, function(item) {
-            var mood = $("#" + item.metaId);
-            var offset = mood.offset();
-            var moodCoordinates = {
+        _.each(styles, function(item) {
+            var style = $("#" + item.metaId);
+            var offset = style.offset();
+            var styleCoordinates = {
                 xStart: offset.left,
-                xEnd: offset.left + mood.width(),
+                xEnd: offset.left + style.width(),
                 yStart: offset.top - 60,
-                yEnd: offset.top - 60 + mood.height()
+                yEnd: offset.top - 60 + style.height()
             };
 
             var xPaintedOver = false;
             var yPaintedOver = false;
 
             _.each(x, function(value) {
-                if (value >= moodCoordinates.xStart && value <= moodCoordinates.xEnd) {
+                if (value >= styleCoordinates.xStart && value <= styleCoordinates.xEnd) {
                     xPaintedOver = true;
                 }
             });
 
             _.each(y, function(value) {
-                if (value >= moodCoordinates.yStart && value <= moodCoordinates.yEnd) {
+                if (value >= styleCoordinates.yStart && value <= styleCoordinates.yEnd) {
                     yPaintedOver = true;
                 }
             });
 
             var paintedOver = false;
+
+            var instrumental = false;
 
             if (xPaintedOver && yPaintedOver) {
                 if (Session.get("brush") === "select") {
@@ -246,7 +266,7 @@ Template.moods.events({
         Session.set("currentPlaylist", playlist);
 
         Meteor.call("updatePlaylist", Session.get("currentPlaylist"), function() {
-            
+
         });
 
     }

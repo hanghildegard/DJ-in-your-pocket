@@ -87,6 +87,19 @@ Meteor.startup(function () {
             params["rule_" + ruleCount] = "2_" + id + "_0_2_0";
             ruleCount++;
         });
+        _.each(playlist.selectedThemes, function (id) {
+            params["rule_" + ruleCount] = "3_" + id + "_1_2_0";
+            ruleCount++;
+        })
+        _.each(playlist.bannedThemes, function (id) {
+            params["rule_" + ruleCount] = "3_" + id + "0_2_0";
+        })
+        _.each(playlist.selectedLanguages, function (id) {
+            params["rule_" + ruleCount] = "6_" + id + "_1_2_0";
+        })
+        _.each(playlist.bannedLanguages, function (id) {
+            params["rule_" + ruleCount] = "6_" + id + "_0_2_0";
+        })
 
         console.log(params);
 

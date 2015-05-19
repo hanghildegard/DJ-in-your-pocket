@@ -1,13 +1,16 @@
+/**
+ * Created by hangdominh on 19/05/15.
+ */
 var x;
 var y;
 var dragging = false;
 
 Session.setDefault("brush", "select");
 
-var onShakeMoods = _.debounce(function onShake() {
+var onShakeLanguages = _.debounce(function onShake() {
     var playlist = Session.get("currentPlaylist");
-    playlist.selectedMoods = [];
-    playlist.bannedMoods = [];
+    playlist.selectedLanguages = [];
+    playlist.bannedLanguages = [];
 
     Session.set("currentPlaylist", playlist);
 
@@ -15,46 +18,76 @@ var onShakeMoods = _.debounce(function onShake() {
     });
 }, 750, true);
 
-var moods = [
+var languages = [
     {
-        name: "Happy",
-        icon: "happy.svg",
-        metaId: "12"
-    },
-    {
-        name: "Sad",
-        icon: "sad.svg",
+        name: "Czech",
+        icon: "czech.svg",
         metaId: "13"
     },
     {
-        name: "Romantic",
-        icon: "romantic.svg",
+        name: "English",
+        icon: "english.svg",
+        metaId: "2"
+    },
+    {
+        name: "Finnish",
+        icon: "finnish.svg",
+        metaId: "1"
+    },
+    {
+        name: "French",
+        icon: "french.svg",
+        metaId: "7"
+    },
+    {
+        name: "German",
+        icon: "german.svg",
+        metaId: "5"
+    },
+    {
+        name: "Greek",
+        icon: "greek.svg",
+        metaId: "15"
+    },
+    {
+        name: "Italian",
+        icon: "italian.svg",
+        metaId: "6"
+    },
+    {
+        name: "Japanese",
+        icon: "japanese.svg",
         metaId: "8"
     },
     {
-        name: "Festive",
-        icon: "festive.svg",
-        metaId: "18"
+        name: "Norwegian",
+        icon: "norwegian.svg",
+        metaId: "12"
     },
     {
-        name: "Energetic",
-        icon: "energetic.svg",
+        name: "Polish",
+        icon: "polish.svg",
+        metaId: "14"
+    },
+    {
+        name: "Portuguese",
+        icon: "portuguese.svg",
         metaId: "11"
     },
     {
-        name: "Bombastic",
-        icon: "bombastic.svg",
-        metaId: "28"
+        name: "Russian",
+        icon: "russian.svg",
+        metaId: "9"
     },
     {
-        name: "Uplifting",
-        icon: "uplifting.svg",
-        metaId: "10"
+        name: "Spanish",
+        icon: "spanish.svg",
+        metaId: "4"
     },
     {
-        name: "Aggressive",
-        icon: "aggressive.svg",
-        metaId: "14"
+        name: "Swedish",
+        icon: "swedish.svg",
+        metaId: "3"
     }
 ];
 
@@ -93,14 +126,14 @@ function drawStroke(ctx){
     }
 }
 
-Template.moods.onRendered(function() {
+Template.languages.onRendered(function() {
 
     lower = $('#lower').get(0).getContext('2d') ;
     upper = $('#upper').get(0).getContext('2d') ;
 
     shake.startWatch(function () {
         lower.clearRect(0, 0, $("#canvasContainer").width(), $("#canvasContainer").height());
-        onShakeMoods();
+        onShakeLanguages();
     }, 30);
 
 
@@ -116,21 +149,21 @@ Template.moods.onRendered(function() {
 });
 
 
-Template.moods.onDestroyed(function() {
+Template.languages.onDestroyed(function() {
     shake.stopWatch();
 });
 
-Template.moods.helpers({
-    moods: function() {
-        return moods;
+Template.languages.helpers({
+    languages: function() {
+        return languages;
     },
     brushIs: function(brush) {
         return Session.get("brush") === brush;
     },
     status: function(metaId) {
-        if (Session.get("currentPlaylist").selectedMoods.indexOf(metaId) > -1)
+        if (Session.get("currentPlaylist").selectedLanguages.indexOf(metaId) > -1)
             return 'selected';
-        else if (Session.get("currentPlaylist").bannedMoods.indexOf(metaId) > -1)
+        else if (Session.get("currentPlaylist").bannedLanguages.indexOf(metaId) > -1)
             return 'banned';
     }
 });
@@ -147,7 +180,7 @@ Template.selectBrush.events({
     }
 });
 
-Template.moods.events({
+Template.languages.events({
     "mousedown #upper, touchstart #upper": function(e) {
 
         if (typeof e.originalEvent.touches === "undefined") {
@@ -184,32 +217,32 @@ Template.moods.events({
 
         var paintedCircles = [];
 
-        console.log(moods);
+        console.log(languages);
 
-        var selectedCircles = Session.get("currentPlaylist").selectedMoods;
-        var bannedCircles = Session.get("currentPlaylist").bannedMoods;
+        var selectedCircles = Session.get("currentPlaylist").selectedLanguages;
+        var bannedCircles = Session.get("currentPlaylist").bannedLanguages;
 
-        _.each(moods, function(item) {
-            var mood = $("#" + item.metaId);
-            var offset = mood.offset();
-            var moodCoordinates = {
+        _.each(languages, function(item) {
+            var language = $("#" + item.metaId);
+            var offset = language.offset();
+            var languageCoordinates = {
                 xStart: offset.left,
-                xEnd: offset.left + mood.width(),
+                xEnd: offset.left + language.width(),
                 yStart: offset.top - 60,
-                yEnd: offset.top - 60 + mood.height()
+                yEnd: offset.top - 60 + language.height()
             };
 
             var xPaintedOver = false;
             var yPaintedOver = false;
 
             _.each(x, function(value) {
-                if (value >= moodCoordinates.xStart && value <= moodCoordinates.xEnd) {
+                if (value >= languageCoordinates.xStart && value <= languageCoordinates.xEnd) {
                     xPaintedOver = true;
                 }
             });
 
             _.each(y, function(value) {
-                if (value >= moodCoordinates.yStart && value <= moodCoordinates.yEnd) {
+                if (value >= languageCoordinates.yStart && value <= languageCoordinates.yEnd) {
                     yPaintedOver = true;
                 }
             });
@@ -238,15 +271,15 @@ Template.moods.events({
         });
 
         var playlist = Session.get("currentPlaylist");
-        playlist.selectedMoods = selectedCircles;
-        playlist.bannedMoods = bannedCircles;
+        playlist.selectedLanguages = selectedCircles;
+        playlist.bannedLanguages = bannedCircles;
 
         console.log(playlist);
 
         Session.set("currentPlaylist", playlist);
 
         Meteor.call("updatePlaylist", Session.get("currentPlaylist"), function() {
-            
+
         });
 
     }

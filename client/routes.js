@@ -27,6 +27,21 @@ Router.route("/moods", {
     name: "moods"
 });
 
+Router.route("/styles", {
+    template: "styles",
+    name: "styles"
+});
+
+Router.route("/languages", {
+    template: "languages",
+    name: "languages"
+});
+
+Router.route("/themes", {
+    template: "themes",
+    name: "themes"
+});
+
 Router.route("/debug", {
     template: "debug",
     name: "debug"

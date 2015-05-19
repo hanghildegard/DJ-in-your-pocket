@@ -15,6 +15,13 @@ GetPlaylistData = function(playlistId) {
         playlist.selectedMoods = [];
         playlist.bannedMoods = [];
 
+        playlist.selectedThemes = [];
+        playlist.bannedThemes = [];
+
+        playlist.selectedLanguages = [];
+        playlist.bannedLanguages = [];
+
+
         _.each(playlist.rules, function(rule) {
             switch(rule.type) {
                 case "1":
@@ -29,6 +36,20 @@ GetPlaylistData = function(playlistId) {
                         playlist.selectedMoods.push(rule.id);
                     } else {
                         playlist.bannedMoods.push(rule.id);
+                    }
+                    break;
+                case "3":
+                    if (rule.op === "1") {
+                        playlist.selectedThemes.push(rule.id);
+                    } else {
+                        playlist.bannedThemes.push(rule.id);
+                    }
+                    break;
+                case "6":
+                    if (rule.op === "1") {
+                        playlist.selectedLanguages.push(rule.id);
+                    } else {
+                        playlist.bannedLanguages.push(rule.id);
                     }
                     break;
             }
