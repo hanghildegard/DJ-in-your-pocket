@@ -29,6 +29,37 @@ Template.playlists.events({
     }
 });
 
+Template.playlistItem.events({
+    "contextmenu": function(event, template) {
+
+        console.log(template.data);
+        IonActionSheet.show({
+            titleText: template.data.name,
+            buttons: [
+                { text: 'Edit' }
+            ],
+            destructiveText: 'Delete',
+            cancelText: 'Cancel',
+            cancel: function() {
+
+            },
+            buttonClicked: function(index) {
+                if (index === 0) {
+                    Router.go("filters");
+                }
+                return true;
+            },
+            destructiveButtonClicked: function() {
+                var playlists = Session.get("playlists");
+                playlists.splice(playlists.indexOf(_.findWhere(playlists, {id: template.data.id})), 1);
+                Session.set("playlists", playlists);
+                Meteor.call("deletePlaylist", template.data.id);
+                return true;
+            }
+        });
+    }
+});
+
 Template.newPlaylistButton.events({
     "click": function() {
         Router.go("new-playlist");

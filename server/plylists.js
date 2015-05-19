@@ -110,6 +110,19 @@ Meteor.startup(function () {
 
     var wrappedUpdatePlaylist = Meteor.wrapAsync(updatePlaylist);
 
+    function deletePlaylist(playlistId, callback) {
+        HTTP.post(url,{params: {
+            uid: uid,
+            pw:pw,
+            method: "removePlaylist",
+            plid: playlistId
+        }}, function(err, result) {
+            return callback(err, result);
+        });
+    }
+
+    var wrappedDeletePlaylist = Meteor.wrapAsync(deletePlaylist);
+
     Meteor.methods({
         getPlaylists: function(){
             return wrappedGetPlaylists(uid, pw);
@@ -128,6 +141,9 @@ Meteor.startup(function () {
         },
         updatePlaylist: function(playlist) {
             return wrappedUpdatePlaylist(playlist);
+        },
+        deletePlaylist: function(playlistId) {
+            return wrappedDeletePlaylist(playlistId);
         }
     })
 });

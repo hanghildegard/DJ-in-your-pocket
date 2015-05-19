@@ -17,10 +17,7 @@
                     {{#ionList class="my-class"}}
                         {{#if playlists.length}}
                             {{#each playlists}}
-                                {{#ionItem path="playlist" buttonRight=true class="item-icon-right"}}
-                                    {{name}}
-                                    {{> ionIcon icon="ios-arrow-forward" class="positive"}}
-                                {{/ionItem}}
+                                {{>playlistItem}}
                             {{/each}}
                         {{else}}
                             {{>loading noMargin=true}}
@@ -36,10 +33,13 @@
     {{/ionContent}}
 </template>
 
-<template name="playlistItem">
-    <h2>{{name}}</h2>
-</template>
-
 <template name="newPlaylistButton">
     <button class="buttons button button-clear pull-right"><i class="icon ion-plus"></i></button>
+</template>
+
+<template name="playlistItem">
+    {{#ionItem path="playlist" buttonRight=true class="item-icon-right"}}
+        {{name}}
+        {{> ionIcon icon="ios-arrow-forward" class="positive"}}
+    {{/ionItem}}
 </template>
