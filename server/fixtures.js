@@ -44,6 +44,14 @@ Meteor.startup(function() {
             {
                 "id": "1011",
                 "name": "Background"
+            },
+            {
+                "id": "50",
+                "name":"Indierock"
+            },
+            {
+                "id": "6",
+                "name":"Jazz"
             }
         ];
 

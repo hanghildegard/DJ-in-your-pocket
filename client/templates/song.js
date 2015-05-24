@@ -206,9 +206,9 @@ Template.song.events({
         var mediaFoo = media.get();
         mediaFoo.play();
 
-        _.each(Session.get("song"), function(value, key) {
-            console.log(key + ": " + value);
-        });
+        //_.each(Session.get("song"), function(value, key) {
+        //    console.log(key + ": " + value);
+        //});
         console.log(mediaFoo.currentTime);
 
         Session.set("playing", true);
@@ -217,5 +217,55 @@ Template.song.events({
         var mediaFoo = media.get();
         mediaFoo.pause();
         Session.set("playing", false);
+    },
+    "click #next": function() {
+        var mediaFoo = media.get();
+        mediaFoo.pause();
+        var song = Session.get("song");
+        var songs = Session.get("songs");
+
+        var index = songs.indexOf(_.findWhere(songs, {id: song.id}));
+        console.log("Index is: " + index);
+        if (typeof songs[index + 1] !== 'undefined')
+            var nextSong = songs[index + 1];
+        else
+            var nextSong = songs[0];
+
+        console.log("Next song: " +nextSong.name);
+
+        mediaFoo.pause();
+        Session.set("playing", true);
+
+        Session.set("song", nextSong);
+        var mediaFoo = media.get();
+        console.log("Song: "+ mediaFoo.song);
+
+        mediaFoo.play();
+
+        Session.set("playing", true);
+
+
+    },
+    "click #previous": function () {
+        var mediaFoo = media.get();
+        mediaFoo.pause();
+        var song = Session.get("song");
+        var songs = Session.get("songs");
+
+        var index = songs.indexOf(_.findWhere(songs, {id: song.id}));
+        if (typeof songs[index - 1] !== 'undefined')
+            var previousSong = songs[index - 1];
+        else
+            var previousSong = songs[songs.size-1];
+
+        mediaFoo.pause();
+        Session.set("playing", true);
+
+        Session.set("song", previousSong);
+        var mediaFoo = media.get();
+
+        mediaFoo.play();
+
+        Session.set("playing", true);
     }
 });
