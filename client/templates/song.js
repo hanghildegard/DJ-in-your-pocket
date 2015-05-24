@@ -225,20 +225,17 @@ Template.song.events({
         var songs = Session.get("songs");
 
         var index = songs.indexOf(_.findWhere(songs, {id: song.id}));
-        console.log("Index is: " + index);
         if (typeof songs[index + 1] !== 'undefined')
             var nextSong = songs[index + 1];
         else
             var nextSong = songs[0];
 
-        console.log("Next song: " +nextSong.name);
 
         mediaFoo.pause();
-        Session.set("playing", true);
+        Session.set("playing", false);
 
         Session.set("song", nextSong);
         var mediaFoo = media.get();
-        console.log("Song: "+ mediaFoo.song);
 
         mediaFoo.play();
 
@@ -259,7 +256,7 @@ Template.song.events({
             var previousSong = songs[songs.size-1];
 
         mediaFoo.pause();
-        Session.set("playing", true);
+        Session.set("playing", false);
 
         Session.set("song", previousSong);
         var mediaFoo = media.get();

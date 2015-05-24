@@ -30,16 +30,6 @@ var uses = [
         metaId: "13"
     },
     {
-        name: "Children's songs",
-        icon: "children's songs.svg",
-        metaId: "8"
-    },
-    {
-        name: "Drinking songs",
-        icon: "drinking songs.svg",
-        metaId: "18"
-    },
-    {
         name: "Exercise",
         icon: "exercise.svg",
         metaId: "11"
@@ -60,10 +50,21 @@ var uses = [
         metaId: "14"
     },
     {
+        name: "Drinking songs",
+        icon: "drinking songs.svg",
+        metaId: "18"
+    },
+    {
         name: "Sing along",
         icon: "sing along.svg",
         metaId: "15"
+    },
+    {
+        name: "Children's songs",
+        icon: "children's songs.svg",
+        metaId: "8"
     }
+
 ];
 
 var lower;
