@@ -45,6 +45,9 @@ Template.playlistItem.events({
             },
             buttonClicked: function(index) {
                 if (index === 0) {
+                    var playlists = Session.get("playlists");
+                    var selected= _.findWhere(playlists, {id: template.data.id});
+                    Session.set("currentPlaylist", selected);
                     Router.go("filters");
                 }
                 return true;
